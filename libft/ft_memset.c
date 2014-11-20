@@ -6,7 +6,7 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/15 14:29:10 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/19 21:03:41 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/20 16:00:47 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_memset(void *b, int c, size_t len)
 
 	i = 0;
 	s = b;
-	while (len)
+	while (len > 0)
 	{
 		s[i] = c;
 		i++;
