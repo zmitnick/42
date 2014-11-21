@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/15 14:29:10 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/20 15:40:00 by mstephan         ###   ########.fr       */
+/*   Created: 2014/11/11 12:44:53 by mstephan          #+#    #+#             */
+/*   Updated: 2014/11/19 16:33:15 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+void	ft_lstiter(t_list *lst, void (*f)(t_list *elem))
 {
-	unsigned char	*s;
-	int				i;
-
-	i = 0;
-	s = b;
-	while (len > 0)
-	{	
-		s[i] = c;
-		i++;
-		len--;
+	if (lst && f)
+	{
+		while (lst)
+		{
+			f(lst);
+			lst = lst->next;
+		}
 	}
-	return (b);
 }

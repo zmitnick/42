@@ -1,29 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/15 14:29:10 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/20 15:40:00 by mstephan         ###   ########.fr       */
+/*   Created: 2014/11/08 17:03:52 by mstephan          #+#    #+#             */
+/*   Updated: 2014/11/21 13:01:53 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+int		ft_is_space(char c)
 {
-	unsigned char	*s;
-	int				i;
+	if (c == ' ' || c == '\n' || c == '\t')
+		return (1);
+	else
+		return (0);
+}
+
+char	*ft_strtrim(char const *s)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*rez;
 
 	i = 0;
-	s = b;
-	while (len > 0)
-	{	
-		s[i] = c;
+	j = ft_strlen(s) - 1;
+	k = 0;
+	rez = ft_memalloc(ft_strlen(s) + 1);
+	while (ft_is_space(*(s + i)))
 		i++;
-		len--;
+	while (ft_is_space(*(s + j)) && j > 0)
+		j--;
+	while (*(s + i) && i <= j)
+	{
+		*(rez + k) = *(s + i);
+		k++;
+		i++;
 	}
-	return (b);
+	*(rez + k) = '\0';
+	return (rez);
 }
