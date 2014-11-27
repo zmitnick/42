@@ -6,37 +6,26 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/06 17:32:12 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/20 16:09:23 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/27 04:10:49 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strstr(const char *s1, const char *s2)
+char	*ft_strstr(char const *hstack, char const *needle)
 {
-	int		i;
-	int		c;
-	int		j;
-	char	*aux;
+	char	*start;
+	size_t	nlen;
 
-	i = 0;
-	j = 0;
-	aux = (char*)malloc(sizeof(char) * ft_strlen(s2) + 1);
-	while (*(s1 + i))
+	nlen = ft_strlen(needle);
+	if (!needle || !nlen || !hstack)
+		return ((char*)hstack);
+	start = (char*)hstack;
+	while ((start = ft_strchr(start, *needle)))
 	{
-		c = ft_strlen(s2);
-		j = 0;
-		while (*(s1 + i + j) && c)
-		{
-			aux[j] = s1[i + j];
-			j++;
-			c--;
-		}
-		aux[j] = '\0';
-		if (ft_strcmp(aux, s2) == 0)
-			return ((char *)(s1 + i));
-		else
-			i++;
+		if (!ft_strncmp(start, needle, nlen))
+			return (start);
+		start++;
 	}
-	return (0);
+	return (NULL);
 }

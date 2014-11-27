@@ -6,70 +6,101 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/12 13:51:41 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/21 12:59:40 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/27 07:58:41 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	c_words(char const *s, char c)
+static int	nb_part_str(char const *s, char c)
 {
-	int	w;
-	int	state;
+	char	*p;
+	int		result;
 
-	state = 0;
-	w = 0;
-	while (*s)
+	p = (char*)s;
+	result = 0;
+	while (*p != '\0' && *p == c)
 	{
-		if (*s != c)
-		{
-			if (state == 0)
-			{
-				state = 1;
-				++w;
-			}
-		}
-		else
-			state = 0;
-		++s;
+		p++;
 	}
-	return (w);
+	if (*p == '\0')
+		return (0);
+	while (p && *p != '\0')
+	{
+		result++;
+		p = ft_strchr(p, c);
+		while (p && *p == c)
+		{
+			p++;
+		}
+	}
+	return (result);
 }
 
-static int	ft_len(char const *s, char c)
+static int	len_part(char *s, char c)
 {
-	int i;
+	char	*p;
 
+	p = ft_strchr(s, c);
+	if (p)
+	{
+		return (p - s);
+	}
+	else
+	{
+		return (ft_strlen(s));
+	}
+}
+
+static char	**strsplit2(char **parent, char const *s, char c, int len)
+{
+	char	*p;
+	int		i;
+	int		lenpart;
+
+	p = (char*)s;
 	i = 0;
-	while (s[i] && s[i] != c)
+	while (*p == c)
+	{
+		p++;
+	}
+	while (i < len)
+	{
+		lenpart = len_part(p, c);
+		parent[i] = ft_strnew(lenpart);
+		parent[i] = ft_strncpy(parent[i], p, lenpart);
+		p += lenpart;
+		while (i < len - 1 && *p == c)
+		{
+			p++;
+		}
 		i++;
-	return (i);
+	}
+	return (parent);
 }
 
 char		**ft_strsplit(char const *s, char c)
 {
-	char	**ret;
-	int		words;
-	int		i;
-	int		j;
+	char	**parent;
 	int		len;
 
-	words = c_words(s, c);
-	ret = (char **)ft_memalloc(sizeof(char *) * (words + 1));
-	i = 0;
-	while (i < words)
+	if (s)
 	{
-		while (*s == c)
-			++s;
-		len = ft_len(s, c);
-		ret[i] = (char *)ft_memalloc(sizeof(char) * (len + 1));
-		j = -1;
-		while (*s != c && *s)
+		if (ft_strequ(s, ""))
 		{
-			ret[i][++j] = *s;
-			++s;
+			parent = (char**)(malloc(sizeof(char*) * 2));
+			parent[0] = NULL;
+			parent[1] = 0;
+			return (parent);
 		}
-		++i;
+		len = nb_part_str(s, c);
+		parent = (char**)(malloc(sizeof(char*) * (len + 1)));
+		parent[len] = 0;
+		if (len == 0)
+		{
+			return (parent);
+		}
+		return (strsplit2(parent, s, c, len));
 	}
-	return (ret);
+	return (NULL);
 }

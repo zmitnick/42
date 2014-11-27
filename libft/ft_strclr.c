@@ -6,18 +6,23 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/07 18:29:55 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/19 17:23:45 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/27 05:59:37 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void ft_strclr(char *s)
+#include "libft.h"
+
+void	ft_strclr(char *s)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	while (*(s + i) != '\0')
+	if (s)
 	{
-		*(s + i) = '\0';
-		i++;
+		while (s[i] != '\0')
+		{
+			s[i] = '\0';
+			i++;
+		}
 	}
 }

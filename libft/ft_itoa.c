@@ -6,67 +6,47 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/17 15:59:42 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/19 22:17:27 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/27 08:08:13 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-static void		ft_detch(int n, int *i)
+static int	ft_nb_count(int n, int i)
 {
-	(*i) = 0;
-	while (n)
+	while (n > 9 || n < 0)
 	{
-		n = n / 10;
-		(*i)++;
+		i++;
+		n /= 10;
 	}
+	return (i);
 }
 
-static void		ft_aux(int *n, char **rez, int *i)
+char		*ft_itoa(int n)
 {
-	if (*n < 0)
-	{
-		*n = -(*n);
-		*rez = (char*)ft_memalloc(sizeof(char) * (*i) + 1);
-		(*rez)[0] = '-';
-		(*i)++;
-	}
-	else
-		*rez = (char*)ft_memalloc(sizeof(char) * (*i));
-}
-
-static void		ft_aux2(int *i, char **rez, int n)
-{
-	while ((*i) > 0 && (*rez)[(*i) - 1] != '-')
-	{
-		(*rez)[(*i) - 1] = n % 10 + '0';
-		n = n / 10;
-		(*i)--;
-	}
-}
-
-char			*ft_itoa(int n)
-{
-	char	*rez;
+	char	*nbstr;
+	char	*nbcut;
+	int		nblen;
+	int		nb;
 	int		i;
 
-	if (n == -2147483648)
-		return ("-2147483648");
-	ft_detch(n, &i);
-	if (i == 0)
+	nblen = (n < 0) ? 2 : 1;
+	nb = n;
+	i = ft_nb_count(n, nblen);
+	nbcut = ft_strnew(i + 1);
+	while (i > 0)
 	{
-		rez = (char*)ft_memalloc(sizeof(char) * 2);
-		rez[0] = '0';
-		rez[1] = '\0';
+		if (n >= 0)
+			nbcut[i - 1] = ((char)((nb % 10) + 48));
+		if (n < 0 && i >= 2)
+			nbcut[i - 2] = ((char)(48 - (nb % 10)));
+		i--;
+		nb /= 10;
 	}
-	else
-	{
-		ft_aux(&n, &rez, &i);
-		if (rez == NULL)
-			return (NULL);
-		rez[i] = '\0';
-		ft_aux2(&i, &rez, n);
-	}
-	return (rez);
+	if (n < 0)
+		nbcut[i] = '-';
+	nbstr = ft_strnew(ft_nb_count(n, nblen) + 1);
+	ft_strcpy(nbstr, nbcut);
+	free(nbcut);
+	return (nbstr);
 }

@@ -6,24 +6,30 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/08 15:18:12 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/19 17:41:56 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/27 06:14:04 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strmap(char const *str, char (*f)(char))
+char	*ft_strmap(char const *s, char (*f)(char))
 {
-	char	*rez;
-	int		i;
+	size_t	i;
+	size_t	len;
+	char	*cpy;
 
-	i = 0;
-	rez = (char *)malloc(sizeof(char) * ft_strlen(str) + 1);
-	while (*(str + i))
+	if (s && f)
 	{
-		*(rez + i) = f(*(str + i));
-		i++;
+		i = 0;
+		len = ft_strlen(s);
+		cpy = ft_strnew(len + 1);
+		cpy = ft_strncpy(cpy, s, len);
+		while (cpy[i] != '\0')
+		{
+			cpy[i] = f(cpy[i]);
+			i++;
+		}
+		return (cpy);
 	}
-	*(rez + i) = '\0';
-	return (rez);
+	return (NULL);
 }

@@ -6,20 +6,26 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/08 15:03:25 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/19 17:30:13 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/27 06:08:49 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_striter(char *s, void (*f)(char *))
+void			ft_striter(char *s, void (*f)(char *))
 {
-	int i;
+	int		len;
+	int		counter;
 
-	i = 0;
-	while (*(s + i))
+	if (s != NULL && f != NULL)
 	{
-		f(s + i);
-		i++;
+		len = ft_strlen(s);
+		counter = 0;
+		while (counter < len)
+		{
+			(*f)(s);
+			s++;
+			counter++;
+		}
 	}
 }
