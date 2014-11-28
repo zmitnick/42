@@ -6,17 +6,17 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/27 03:43:39 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/28 01:38:03 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/28 10:49:33 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 /*
  * ** author : qperez
  * ** HardCore + strtrim + Fixes: mfontain
  * ** Fixes strsplit, strequ: gabtoubl
  * ** Fixes strsplit, strjoin, strsub, strtrim, itoa, strequ, strnequ: stherman
+ * ** Crash handle : ele-goug
+ * ** Detailed error messages : jpucelle
  * **
  * ** Any segfault ? Probably caused by a NULL test. ex : ft_memset(NULL, 0, 0);
  * */
@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include <unistd.h>
+#include <signal.h>
 
 #include "libft.h" /* compile with -I./ */
 
@@ -105,11 +107,12 @@ void				uf_add_test(t_test *test, const char *name, int (*funct)(void))
 	i = i + 1;
 }
 
-
-int					main(int argc, const char **argv)
+int					main(void)
 {
 	int				i;
 	t_test			test[D_TEST];
+	int				status;
+	pid_t			pid;
 
 	srand(time(NULL));
 	printf("[\033[33mYellow Tests\033[0m] are Hardcore\n");
@@ -118,7 +121,7 @@ int					main(int argc, const char **argv)
 	/*
 	 *  * Si vous n'avez pas la fonction il suffit de mettre en commentaire
 	 *   */
-/*
+	/*
 	 *  * Example : vous n'avez pas memset vous commentez
 	 *   * // #define D_MEMSET
 	 *    * // D_ADD_TEST(...)
@@ -215,23 +218,47 @@ int					main(int argc, const char **argv)
 	D_ADD_TEST(lstdelone);
 #define	D_LSTDEL
 	D_ADD_TEST(lstdel);
-//#define	D_LSTADD
-//	D_ADD_TEST(lstadd);
-//#define	D_LSTITER
-//	D_ADD_TEST(lstiter);
-//#define D_LSTMAP
-//	D_ADD_TEST(lstmap);
+#define	D_LSTADD
+	D_ADD_TEST(lstadd);
+#define	D_LSTITER
+	D_ADD_TEST(lstiter);
+#define D_LSTMAP
+	D_ADD_TEST(lstmap);
 	while (test[i].set == true)
 	{
 		printf("Test [%s] : ", test[i].name);
-		if (test[i].funct() == 0)
-			printf("\033[31mFAIL\033[0m\n");
+		fflush(stdout);
+		if ((pid = fork()) == 0)
+		{
+			if (test[i].funct() == 0)
+				printf("\033[31mFAIL\033[0m\n");
+			else
+				printf("\033[32mOK\033[0m\n");
+			exit(0);
+		}
+		if (pid == -1)
+			printf("\033[33mUNABLE TO FORK\033[0m\n");
 		else
-			printf("\033[32mOK\033[0m\n");
+		{
+			if (waitpid(pid, &status, 0) != -1)
+			{
+				if (WIFSIGNALED(status))
+				{
+					if (WTERMSIG(status) == SIGSEGV)
+						printf("\033[33mSegmentation Fault\033[0m\n");
+					else if (WTERMSIG(status) == SIGEMT)
+						printf("\033[33mBus Error\033[0m\n");
+					else if (WTERMSIG(status) == SIGILL)
+						printf("\033[33mIllegal Instruction\033[0m\n");
+					else
+						printf("\033[33mThe processus receive the signal %d\033[0m\n", WTERMSIG(status));
+				}
+			}
+			else
+				perror("Waitpid");
+		}
 		i = i + 1;
 	}
-	(void)argc;
-	(void)argv;
 	return (0);
 }
 
@@ -247,7 +274,7 @@ void	uf_del_callback(void *d, size_t s)
 
 #ifdef  D_LSTMAP
 
-t_list				*uf_testmap(t_list *elem)
+t_list		*uf_testmap(t_list *elem)
 {
 	t_list	*new;
 	char	*content;
@@ -291,7 +318,7 @@ int					uf_test_lstmap(void)
 #endif
 
 #ifdef	D_LSTITER
-void				uf_iter_callback(t_list *v)
+void	uf_iter_callback(t_list *v)
 {
 	*(size_t*)v->content = *(size_t*)v->content + 1;
 }
@@ -1121,12 +1148,11 @@ int				uf_test_atoi(void)
 		str[11] = 0;
 		if (atoi(str) != ft_atoi(str))
 			D_ERROR
-				i++;
+		i++;
 	}
 	return (1);
 }
 #endif
-
 /*
  * ** Don't be stupid ppl, be careful with this noob noob noob test
  * */
@@ -1859,3 +1885,4 @@ int					uf_test_bzero(void)
 	return (1);
 }
 #endif
+

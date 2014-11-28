@@ -6,36 +6,34 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/12 14:00:57 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/27 03:47:04 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/28 10:02:47 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list*))
 {
-	t_list		*brand_new_list;
-	t_list		*the_beginning;
-	t_list		*tempo;
+	t_list	*result;
+	t_list	*tmp;
+	t_list	*tmp2;
 
-	if (f == NULL && lst == NULL)
+	if (!lst || !f)
 		return (NULL);
-	tempo = f(lst);
-	brand_new_list = ft_lstnew(tempo->content, tempo->content_size);
-	if (brand_new_list == NULL)
-		return (NULL);
-	the_beginning = brand_new_list;
-	while (lst->next != NULL)
+	tmp2 = f(lst);
+	if ((result = ft_lstnew(tmp2->content, tmp2->content_size)))
 	{
-		tempo = f(lst->next);
-		brand_new_list->next = ft_lstnew(tempo->content, tempo->content_size);
-		if (brand_new_list->next == NULL)
-		{
-			ft_lstdel(&the_beginning, &ft_bzero);
-			return (NULL);
-		}
+		tmp = result;
 		lst = lst->next;
-		brand_new_list = brand_new_list->next;
+		while (lst)
+		{
+			tmp2 = f(lst);
+			if (!(tmp->next = ft_lstnew(tmp2->content, tmp2->content_size)))
+				return (NULL);
+			tmp = tmp->next;
+			lst = lst->next;
+		}
 	}
-	return (the_beginning);
+	return (result);
 }
