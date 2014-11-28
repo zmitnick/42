@@ -6,7 +6,7 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/27 03:43:39 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/27 05:42:07 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/28 01:38:03 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int					main(int argc, const char **argv)
 	/*
 	 *  * Si vous n'avez pas la fonction il suffit de mettre en commentaire
 	 *   */
-	/*
+/*
 	 *  * Example : vous n'avez pas memset vous commentez
 	 *   * // #define D_MEMSET
 	 *    * // D_ADD_TEST(...)
@@ -215,12 +215,12 @@ int					main(int argc, const char **argv)
 	D_ADD_TEST(lstdelone);
 #define	D_LSTDEL
 	D_ADD_TEST(lstdel);
-#define	D_LSTADD
-	D_ADD_TEST(lstadd);
-#define	D_LSTITER
-	D_ADD_TEST(lstiter);
-#define D_LSTMAP
-	D_ADD_TEST(lstmap);
+//#define	D_LSTADD
+//	D_ADD_TEST(lstadd);
+//#define	D_LSTITER
+//	D_ADD_TEST(lstiter);
+//#define D_LSTMAP
+//	D_ADD_TEST(lstmap);
 	while (test[i].set == true)
 	{
 		printf("Test [%s] : ", test[i].name);
