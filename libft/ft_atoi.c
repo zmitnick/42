@@ -6,7 +6,7 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/28 09:29:24 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/28 10:12:25 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/11/29 04:13:40 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int			ft_isspace(char c)
 {
 	return (c == ' ' || c == '\n' || c == '\t' || c == '\v' || c == '\r'
-			|| c == '\f');
+	|| c == '\f');
 }
 
 static int			sp_continue(char c)
