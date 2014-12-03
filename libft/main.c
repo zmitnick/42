@@ -6,7 +6,7 @@
 /*   By: mstephan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/29 04:18:31 by mstephan          #+#    #+#             */
-/*   Updated: 2014/11/29 04:22:32 by mstephan         ###   ########.fr       */
+/*   Updated: 2014/12/03 07:32:48 by mstephan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,8 @@ int					main(int argc, const char **argv)
 	D_ADD_TEST(strcmp);
 #define	D_STRNCMP
 	D_ADD_TEST(strncmp);
-//#define	D_ATOI
-//	D_ADD_HCTEST(atoi);
+#define	D_ATOI
+	D_ADD_HCTEST(atoi);
 #define	D_ISALPHA
 	D_ADD_HCTEST(isalpha);
 #define	D_ISDIGIT
